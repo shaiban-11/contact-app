@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider_2/bloc/contact_bloc.dart';
-
-import 'package:provider_2/contact_respiratory.dart';
-import 'package:provider_2/contact_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:provider_2/poda.dart';
+import 'package:provider_2/theme_settings.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final ContactRepository repository = ContactRepository();
-
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ContactBloc(repository),
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: ContactScreen(),
-      ),
+    return ChangeNotifierProvider(
+      create: (context) => ThemeSettings(),
+
+      builder: (context, asyncSnapshot) {
+        final settings = context.read<ThemeSettings>();
+        return MaterialApp(
+          title: 'Flutter Demo',
+          theme: settings.currentTheme,
+          home: Shaiban(title: "shaiban"),
+        );
+      },
     );
   }
 }
